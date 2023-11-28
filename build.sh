@@ -1,5 +1,16 @@
-set -ex
-bash
+#!/bin/bash
+
+if command -v podman &> /dev/null
+then
+    export CONTAINER_RUNTIME=podman
+elif command -v docker &> /dev/null
+then
+    export CONTAINER_RUNTIME=docker
+else
+    echo "Neither Podman nor Docker is installed"
+fi
+
+
 USERNAME=lausser
-IMAGE=git-watch-hook
-podman build -t $USERNAME/$IMAGE:latest .
+IMAGE=sshd
+$CONTAINER_RUNTIME build -t $USERNAME/$IMAGE:latest .
