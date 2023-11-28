@@ -8,7 +8,7 @@ A container which runs sshd
 - SSHD_USERS  
   A list of users separated by spaces. Supported formats are:
   - A url like *https://github.com/lausser.keys*, where the username will be *lausser* and the downloaded file will be saved to *~lausser/.ssh/authorized_keys*
-  - A string like *username:password*
+  - A string like *username:password*  
   If SSHD_USERS is empty, a random username with a random password will be created and written to the containers stderr.
 
 ## Persistent hostkeys
