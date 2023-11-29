@@ -43,6 +43,8 @@ for SSHD_USER in ${SSHD_USERS}; do
       chown -R ${USERNAME}:${USERNAME} /home/${USERNAME}/.ssh
       chmod 700 /home/${USERNAME}/.ssh
       chmod 644 /home/${USERNAME}/.ssh/authorized_keys
+      # set an invalid password hash
+      echo "${USERNAME}:*" | chpasswd -e
     fi
   fi
 done
