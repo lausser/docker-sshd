@@ -4,7 +4,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: sshd
+  IMAGE_NAME: lausser/sshd
   
 name: Build and upload a Docker Image
 jobs:
