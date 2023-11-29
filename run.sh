@@ -40,6 +40,9 @@ for SSHD_USER in ${SSHD_USERS}; do
     install -o ${USERNAME} -g ${USERNAME} -m 700 -d /home/${USERNAME}/.ssh
     if [ -n "$URL" ]; then
       curl --silent --location --output /home/${USERNAME}/.ssh/authorized_keys "${URL}"
+      chown -R ${USERNAME}:${USERNAME} /home/${USERNAME}/.ssh
+      chmod 700 /home/${USERNAME}/.ssh
+      chmod 644 /home/${USERNAME}/.ssh/authorized_keys
     fi
   fi
 done
