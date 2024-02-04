@@ -47,6 +47,9 @@ for SSHD_USER in ${SSHD_USERS}; do
           # http request succeeded, check if the file actually has content
           if [ -s /home/${USERNAME}/.ssh/authorized_keys ]; then
             echo "authorized_keys for $USERNAME downloaded successfull"
+            chown -R ${USERNAME}:${USERNAME} /home/${USERNAME}/.ssh
+            chmod 700 /home/${USERNAME}/.ssh
+            chmod 644 /home/${USERNAME}/.ssh/authorized_keys
             break
           else
             echo "authorized_keys for $USERNAME has zero size"
@@ -57,6 +60,8 @@ for SSHD_USER in ${SSHD_USERS}; do
           ((retries--))
           sleep 10
       done
+      # set an invalid password hash
+      echo "${USERNAME}:*" | chpasswd -e
     fi
   fi
 done

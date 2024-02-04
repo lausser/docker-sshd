@@ -4,10 +4,10 @@ LABEL description="Run a ssh daemon in a container"
 
 USER root
 RUN apk update
-RUN apk add --no-cache curl bash openssh cracklib-words
+RUN apk add --no-cache curl bash openssh cracklib-words tini
 RUN gzip -d /usr/share/cracklib/cracklib-words.gz
 WORKDIR /root
 ADD run.sh /root
 RUN chmod 755 /root/run.sh
 ADD VERSION /root
-ENTRYPOINT /root/run.sh
+CMD ["/sbin/tini", "-s", "/root/run.sh"]
