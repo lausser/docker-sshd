@@ -39,7 +39,24 @@ for SSHD_USER in ${SSHD_USERS}; do
     fi
     install -o ${USERNAME} -g ${USERNAME} -m 700 -d /home/${USERNAME}/.ssh
     if [ -n "$URL" ]; then
-      curl --silent --location --output /home/${USERNAME}/.ssh/authorized_keys "${URL}"
+      retries=3
+      while [ $retries -gt 0 ]; do
+        # Run curl and store HTTP status code in $status_code
+        status_code=$(curl --write-out "%{http_code}" --silent --location --output /home/${USERNAME}/.ssh/authorized_keys "${URL}")
+        if [ "$status_code" -eq 200 ]; then
+          # http request succeeded, check if the file actually has content
+          if [ -s /home/${USERNAME}/.ssh/authorized_keys ]; then
+            echo "authorized_keys for $USERNAME downloaded successfull"
+            break
+          else
+            echo "authorized_keys for $USERNAME has zero size"
+          fi
+        else
+          echo "authorized_keys for $USERNAME download failed with $status_code"
+        fi
+          ((retries--))
+          sleep 10
+      done
     fi
   fi
 done
